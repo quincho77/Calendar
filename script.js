@@ -3,7 +3,7 @@ window.onload = function () {
     var date = new Date();
     
     var month = date.getMonth() + 1;   //0 - 11
-    var year = date.getFullYear();  // 2017
+    var year = date.getFullYear();  // 20--
     
     constructCalendar(year, month);
 };
@@ -11,39 +11,56 @@ window.onload = function () {
 
 function constructCalendar(year, month)
 {
-    console.log(weekHeaders());
+    var table = document.createElement('table');
+    var tr = document.createElement('tr');      // later inserted
+    weekHeader(table);
+    document.getElementById('calendar-dates').appendChild(table);
     
-    var daysMonth = daysPerMonth(year, month);
-    var zellerDay = zeller(year, month);
+    var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                      'October', 'November', 'December'];
+    var daysMonth = daysPerMonth(year, month);    // number of days in a month
+    var zellerDay = zeller(year, month);          // first day of the month in the week
     var countDays;
     
     countDays = (zellerDay == 0) ? 7 : zellerDay;
-//    console.log(zellerDay);
-//    console.log(countDays);
     
-    var output = printDaysLastMonth(month - 1, zellerDay, year);
+    var arrayDaysLastMonth = daysLastMonth(month - 1, zellerDay, year);
+    var arrayDaysMonth = [];
     
-//    console.log(printDaysLastMonth(month - 1, zellerDay, year));
+    for (var i = 1; i <= daysMonth; i++)
+        arrayDaysMonth.push(i);
     
-    if (countDays == 7)
-        output += "\n";
+    var arrayDaysNextMonth = daysNextMonth(arrayDaysLastMonth.length + arrayDaysMonth.length);
+    var arrayCalendar = arrayDaysLastMonth.concat(arrayDaysMonth, arrayDaysNextMonth);
     
-    for (var j = 1; j <= daysMonth; j++)
+    for (var i = 0; i < arrayCalendar.length; i++)
     {
-        output += j + "\t";
-        countDays++;
+        var td = document.createElement('td');
+        td.innerHTML = arrayCalendar[i];
+        tr.appendChild(td);
         
-        if (countDays % 7 == 0)
-            output += "\n";
-    }// end of for
-    
-    output = printDaysNextMonth(countDays, output)
-    console.log(output);
+        if ((i + 1) % 7 == 0 )
+        {
+            table.appendChild(tr);
+            tr = null;
+            tr = document.createElement('tr');
+        }// end of the if
+    }// end of the for
 }// end of the function constructCalendar
 
-function weekHeaders()
+function weekHeader(table)
 {
-    return "Sun\tMon\tTue\tWen\tThu\tFri\tSat";
+    var dayNames = ['Sun','Mon', 'Tue', 'Wen', 'Thu', 'Fri', "Sat"];
+    var tr = document.createElement('tr');
+    
+    for (var i = 0; i <= 6; i++)
+    {
+        var td = document.createElement('td');
+        td.innerHTML = dayNames[i];
+        tr.appendChild(td);
+    }// end of the for
+    
+    table.appendChild(tr);
 }// end of the function weekHeader
 
 // Return the number of days that has a specific month
@@ -65,18 +82,17 @@ function zeller (year, month)
     var m = parseInt(month + 12 * a - 2);
     var dia = 1;
     
-    
     var d = (dia + y + parseInt(y / 4) - parseInt(y / 100) + parseInt(y / 400) + parseInt((31 * m) / 12)) % 7;  // zeller's formula
     
     return parseInt(d);
 }// end of the function zeller
 
-function printDaysLastMonth(lasthMonth, zeller, year)
+function daysLastMonth(lasthMonth, zeller, year)
 {
     var count;
-    var output = "";
-    var lastMonthLastYear = (lasthMonth == 0) ? 12 : lasthMonth;
-    var daysLastMonth = daysPerMonth(year, lastMonthLastYear);
+    var remainingDays = [];  // Host the days of the last month to complete the row in the Calendar
+    lasthMonth = (lasthMonth == 0) ? 12 : lasthMonth;
+    var daysLastMonth = daysPerMonth(year, lasthMonth);
     
     if (zeller == 0)
     {
@@ -89,35 +105,29 @@ function printDaysLastMonth(lasthMonth, zeller, year)
     
     daysLastMonth = daysLastMonth - (zeller - 1);
     
-    for (var i = count; count > 0; count--)
+    for (count; count > 0; count--)
     {
-        output += daysLastMonth + "\t";
+        remainingDays.push(daysLastMonth);
         daysLastMonth++;
-    }// end of for
+    }// end of the for
     
-    return output;
+    return remainingDays;
 }// end of the function printDaysLastMonth
 
-function printDaysNextMonth(countDays, output)
+function daysNextMonth(countDays)
 {
-    var counter = countDays;
-    var outputDays = output;
+    var leftoverDays = [];
     
-    for (var i = 1; countDays < 42; i++, countDays++)
-    {
-        if (countDays % 7 == 0 && i != 1)
-            outputDays += "\n";
-        
-        outputDays += i + "\t";
-    }// fin del for
+    for (var i = 1; i <= (42 - countDays); i++)
+        leftoverDays.push(i);
     
-    return outputDays;
-}
+    return leftoverDays;
+}// end of the function daysNextMonth
 
 // Return true if it's a leap-year
 function isLeapYear(year)
 {
-    // check if is a leap-year
+    // check if it is a leap-year
     if ( year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
         return true;                
         
