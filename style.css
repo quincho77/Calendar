@@ -1,0 +1,243 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+#calendar-container {
+    background-color: aquamarine;
+    width: 480px;
+    height: 525px;
+}
+
+/* -------- calendar-keypad ------------ */
+#celendar-keypad {
+    height: 64px;   /* height = 65 = hr + border*/
+    background: -webkit-linear-gradient(top, rgba(149,182,196,1) 1%,rgba(149,182,196,1) 50%,rgba(86,126,160,1) 100%);
+    border-bottom: 1px solid black;
+    font-family: 'Arial';
+    text-align: center;
+    color: white;
+}
+
+.buttons {
+    border-radius: .5rem;
+    height: 45px;
+    margin-top: 8.8px;
+    background: -webkit-linear-gradient(top, rgba(120,146,181,1) 0%,rgba(120,146,181,1) 50%,rgba(73,107,155,1) 100%);
+    font-weight: bolder;
+    color: white;
+    border: 0.5px solid #66788e;
+}
+
+.calendars {
+    width: 6.7rem;
+    font-size: 15px;
+    border-top: 1.5px solid #66788e;
+    float: left;
+    margin-left: 7.5px;
+}
+
+.plus {
+    width: 3.04rem;
+    border-top: 1.5px solid #66788e;
+    font-size: 17.5px;
+    float: right;
+    margin-right: 7.5px;
+}
+
+#celendar-keypad span {
+    align-self: center;
+    float: left;    /* floating to the left, but the browser put it(the element) wherever it pleases*/
+    line-height: 65px; /* It center vertically */
+    font-weight: bold;
+    font-size: 23.2px;
+}
+
+/* -------- calendar-header ------------ */
+#calendar-header {
+    display: flex;
+    flex-direction: column;
+    height: 66.3px;
+    background: -webkit-linear-gradient(top, rgba(244,244,246,1) 0%,rgba(206,205,211,1) 73%);
+    font-family: 'Arial';
+}
+
+#header-month {
+    height: 30px;
+    width: 100%;
+    margin-bottom: 5px;
+    align-self: center;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#header-month span {
+    font-weight: bold;
+    font-size: 26.8px;    /*exact measurement so that the letter fits inside its container completely*/
+    color: #444444;
+}
+
+.arrow {
+    height: 0;
+    width: 0;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+}
+
+.a-left {
+    border-right: 18px solid #384653;
+    margin-left: 30px;
+}
+
+.a-right {
+    border-left: 18px solid #384653; 
+    margin-right: 30px;
+
+}
+
+#header-week {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 13.8px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#header-week li {
+    font-size: 13px;
+    font-weight: bold;
+    color: #444444;
+}
+
+/*---------- calendar-table ---------*/
+#calendar-dates {
+    background: -webkit-linear-gradient(-45deg, rgba(247,248,252,1) 0%,rgba(216,215,220,1) 37%,rgba(204,203,209,1) 100%);
+}
+
+#date-days {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#date-days tr td {
+    box-sizing: border-box;
+    text-align: center;
+    height: 65px;
+    padding: 0;
+    font-family: 'Arial';
+    font-size: 27.5px;
+    font-weight: bold;
+    background: -webkit-linear-gradient(top, #1f2732 0%,#4e6076 84%);
+    -webkit-background-clip: text;
+    color: transparent;
+    border-top: 1px solid #a8a9ae;
+    border-right: 1px solid #a8a9ae;
+    box-shadow: -1px 0 #d0d1d5 inset,
+                0 1px #d0d1d5 inset,
+                -2px 0 #f8f9fd inset,
+                0 2px #f8f9fd inset;    /*borders inside the cells*/
+}
+
+#date-days tr td:last-child {
+    border-right: none;
+    box-shadow: -1px 0,
+                0 1px #d0d1d5 inset,
+                0 2px #f8f9fd inset;   /*remove de edge of the right margin*/
+    
+}
+/*#calendar-header table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    font-weight: bolder;
+    background-color: beige;
+}
+
+#calendar-header table tr{
+    display: flex;
+    justify-content: space-around;
+}
+
+#calendar-header table tr td {
+    padding: 0;
+    border: 0px;
+}
+
+/*#calendar-header table td:nth-child(1) {
+    background-color: red;
+}
+
+#calendar-header table td:nth-child(2) {
+    background-color: red;
+}*/
+/*---------- calendar-footer ---------*/
+#calendar-footer {
+    box-sizing: border-box;
+    height: 65px;
+    background: -webkit-linear-gradient(top, rgba(149,182,196,1) 1%,rgba(149,182,196,1) 50%,rgba(86,126,160,1) 100%);
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+}
+
+#bottom-keypad {
+/*    background-color: yellow;*/
+    position: relative;
+    display: inline-flex;
+}
+
+.today {
+    font-size: 15px;
+    width: 64px;
+    border-top: 1.5px solid #66788e;
+    margin-left: 7.5px;
+}
+
+.arrow-bottom {
+    border-top: 1.5px solid #66788e;
+    width: 64px;
+    margin-right: 7.5px;
+}
+
+.group-buttons {
+    width: 82.5px;
+    border: none;
+    border-radius: 0px;
+    border-top: 1.5px solid #66788e;
+    border-bottom: 0.5px solid #66788e;
+    background: -webkit-linear-gradient(top, rgba(149,182,196,1) 1%,rgba(149,182,196,1) 50%,rgba(86,126,160,1) 100%);
+}
+
+#bottom-keypad button:nth-child(1) {
+    border-bottom-left-radius: .5rem;
+    border-top-left-radius: .5rem;
+    border-left: 0.5px solid #5e6f83;
+    border-right: 0.5px solid #6b7d95; 
+    background-color:;
+}
+
+#bottom-keypad button:nth-child(3) {
+    border-bottom-right-radius: .5rem;
+    border-top-right-radius: .5rem;
+    border-right: 0.5px solid #5e6f83;
+    border-left: 0.5px solid #6b7d95;
+}
+
+
+
+
+
+
+
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#95b6c4+1,95b6c4+50,567ea0+100 */
+background: rgb(149,182,196); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(149,182,196,1) 1%, rgba(149,182,196,1) 50%, rgba(86,126,160,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(149,182,196,1) 1%,rgba(149,182,196,1) 50%,rgba(86,126,160,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(149,182,196,1) 1%,rgba(149,182,196,1) 50%,rgba(86,126,160,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#95b6c4', endColorstr='#567ea0',GradientType=0 ); /* IE6-9 */

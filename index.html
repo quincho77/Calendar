@@ -2,17 +2,57 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>Calendar</title>
         <link rel="stylesheet" href="style.css">
-        <script type="text/javascript" src="script.js"></script>
+        <link rel="stylesheet" href="Fonts/fontello.css">
     </head>
     <body>
         <div id="calendar-container">
+            <div id="celendar-keypad">
+                <button class="buttons calendars">Calendars</button>
+                <span id="calendar-year">All Calendars</span>
+                <button class="buttons plus">
+                    <i class="icon-plus-1"></i>
+                </button>
+            </div>
+               
             <div id="calendar-header">
-                <span id="calendar-month-year"></span>
+                <div id="header-month">
+                    <div class="arrow a-left"></div>
+                    <span id="calendar-month-year">September</span>
+                    <div class="arrow a-right"></div>
+                </div>
+                
+                <ul id="header-week">
+                    <li>Sun</li>
+                    <li>Mon</li>
+                    <li>Tue</li>
+                    <li>Wed</li>
+                    <li>Thu</li>
+                    <li>Fri</li>
+                    <li>Sat</li>
+                </ul>
             </div>
             
             <div id="calendar-dates"></div>
+            
+            <div id="calendar-footer">
+                <button class="buttons today">Today</button>
+                <div id="bottom-keypad">
+                    <button class="buttons group-buttons">List</button>
+                    <button class="buttons group-buttons">Day</button>
+<!--                    <span style="background: red">Day</span>-->
+                    
+                    <button class="buttons group-buttons">Month</button>
+<!--                                        <span style="background: red">Day</span>-->
+
+                </div>
+                <button class="buttons arrow-bottom"><img src="icon.png"/></button>
+            </div>
         </div>
+        
+        <div id="triangulo"></div>
+        <script type="text/javascript" src="script.js"></script>
     </body>
 </html>

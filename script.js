@@ -1,19 +1,22 @@
 window.onload = function () {
     
     var date = new Date();
-    
     var month = date.getMonth() + 1;   //0 - 11
     var year = date.getFullYear();  // 20--
     
     constructCalendar(year, month);
+    centerATitle();
 };
 
-
+// This function creates the dates of a month with a table format to look like a calendar, callind the functions 
+// below
 function constructCalendar(year, month)
 {
+    
     var table = document.createElement('table');
+    table.id = 'date-days';
     var tr = document.createElement('tr');      // later inserted
-    weekHeader(table);
+    //weekHeader(table);
     document.getElementById('calendar-dates').appendChild(table);
     
     var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
@@ -118,7 +121,7 @@ function daysNextMonth(countDays)
 {
     var leftoverDays = [];
     
-    for (var i = 1; i <= (42 - countDays); i++)
+    for (var i = 1; i <= (35 - countDays); i++)
         leftoverDays.push(i);
     
     return leftoverDays;
@@ -133,3 +136,32 @@ function isLeapYear(year)
         
     return false;
 }// end of the function isLeapYear
+
+
+// This function return the value of a property of CSS
+function queryCascade(element, property)
+{
+    if (typeof getComputedStyle === "function")
+        return getComputedStyle(element, null)[property];
+}
+
+function centerATitle()
+{
+    // Obtener la anchura del title asignado automaticamente
+    // obtener la anchura total del contenedor
+    // (anchuraTitulo - anchuraContenedor) / 2
+    // asignar el resultado de la operacion anterior al margin-left del titulo
+    
+    var widthTitle = document.getElementById('calendar-year').offsetWidth;
+    var widthContainer = document.getElementById('calendar-container').offsetWidth;
+    var widthCalendarsButton = document.getElementsByTagName('button')[0].offsetWidth;
+    
+    var sheet = document.getElementsByTagName("link")[0].sheet;
+    var rules = sheet.cssRules;
+    var rule = rules[6];
+    var statements = rule.style;
+    var value = ((widthContainer - widthTitle) / 2) - (widthCalendarsButton + 7.5);
+    statements.marginLeft = value.toString() + "px";
+    
+}// end of the function centerATitle
+
