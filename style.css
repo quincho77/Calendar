@@ -96,7 +96,6 @@ body {
 .a-right {
     border-left: 18px solid #384653; 
     margin-right: 30px;
-
 }
 
 #header-week {
@@ -145,36 +144,10 @@ body {
 
 #date-days tr td:last-child {
     border-right: none;
-    box-shadow: -1px 0,
-                0 1px #d0d1d5 inset,
+    box-shadow: 0 1px #d0d1d5 inset,
                 0 2px #f8f9fd inset;   /*remove de edge of the right margin*/
-    
-}
-/*#calendar-header table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 10px;
-    font-weight: bolder;
-    background-color: beige;
 }
 
-#calendar-header table tr{
-    display: flex;
-    justify-content: space-around;
-}
-
-#calendar-header table tr td {
-    padding: 0;
-    border: 0px;
-}
-
-/*#calendar-header table td:nth-child(1) {
-    background-color: red;
-}
-
-#calendar-header table td:nth-child(2) {
-    background-color: red;
-}*/
 /*---------- calendar-footer ---------*/
 #calendar-footer {
     box-sizing: border-box;
@@ -187,7 +160,6 @@ body {
 }
 
 #bottom-keypad {
-/*    background-color: yellow;*/
     position: relative;
     display: inline-flex;
 }
@@ -219,7 +191,6 @@ body {
     border-top-left-radius: .5rem;
     border-left: 0.5px solid #5e6f83;
     border-right: 0.5px solid #6b7d95; 
-    background-color:;
 }
 
 #bottom-keypad button:nth-child(3) {

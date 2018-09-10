@@ -33,13 +33,20 @@ function constructCalendar(year, month)
     for (var i = 1; i <= daysMonth; i++)
         arrayDaysMonth.push(i);
     
-    var arrayDaysNextMonth = daysNextMonth(arrayDaysLastMonth.length + arrayDaysMonth.length);
+    var arrayDaysNextMonth = daysNextMonth(arrayDaysLastMonth.length, arrayDaysMonth.length);
     var arrayCalendar = arrayDaysLastMonth.concat(arrayDaysMonth, arrayDaysNextMonth);
-    
+
     for (var i = 0; i < arrayCalendar.length; i++)
     {
         var td = document.createElement('td');
         td.innerHTML = arrayCalendar[i];
+
+        if (arrayDaysLastMonth[i] != null)   // set style some "td's"
+            td.style.cssText = "background:-webkit-linear-gradient(top, #85868b 0%,#9daab3 100%);-webkit-background-clip: text;color: transparent;";
+
+        if (arrayDaysNextMonth[i] == null && arrayDaysMonth.length <= (i - arrayDaysLastMonth.length))   // set style some "td's"
+            td.style.cssText = "background:-webkit-linear-gradient(top, #85868b 0%,#9daab3 100%);-webkit-background-clip: text;color: transparent;";
+
         tr.appendChild(td);
         
         if ((i + 1) % 7 == 0 )
@@ -66,7 +73,7 @@ function weekHeader(table)
     table.appendChild(tr);
 }// end of the function weekHeader
 
-// Return the number of days that has a specific month
+// Return the number of days that a specific month has
 function daysPerMonth(year, month)
 {
     var daysMonth = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -117,11 +124,11 @@ function daysLastMonth(lasthMonth, zeller, year)
     return remainingDays;
 }// end of the function printDaysLastMonth
 
-function daysNextMonth(countDays)
+function daysNextMonth(lastMonthDays, daysMonth)
 {
     var leftoverDays = [];
     
-    for (var i = 1; i <= (35 - countDays); i++)
+    for (var i = 1; i <= ((lastMonthDays > 4) ? 42 : 35) - (lastMonthDays + daysMonth); i++)
         leftoverDays.push(i);
     
     return leftoverDays;
@@ -162,6 +169,5 @@ function centerATitle()
     var statements = rule.style;
     var value = ((widthContainer - widthTitle) / 2) - (widthCalendarsButton + 7.5);
     statements.marginLeft = value.toString() + "px";
-    
 }// end of the function centerATitle
 
