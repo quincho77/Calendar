@@ -121,6 +121,7 @@ body {
 #date-days {
     width: 100%;
     border-collapse: collapse;
+    user-select: none;
 }
 
 #date-days tr td {
@@ -146,6 +147,12 @@ body {
     border-right: none;
     box-shadow: 0 1px #d0d1d5 inset,
                 0 2px #f8f9fd inset;   /*remove de edge of the right margin*/
+}
+
+#date-days tr td:hover {
+    background: radial-gradient(#9daab3, #85868b);
+    color: #fbffff;
+    cursor: pointer;
 }
 
 /*---------- calendar-footer ---------*/
@@ -199,16 +206,3 @@ body {
     border-right: 0.5px solid #5e6f83;
     border-left: 0.5px solid #6b7d95;
 }
-
-
-
-
-
-
-
-/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#95b6c4+1,95b6c4+50,567ea0+100 */
-background: rgb(149,182,196); /* Old browsers */
-background: -moz-linear-gradient(top, rgba(149,182,196,1) 1%, rgba(149,182,196,1) 50%, rgba(86,126,160,1) 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top, rgba(149,182,196,1) 1%,rgba(149,182,196,1) 50%,rgba(86,126,160,1) 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom, rgba(149,182,196,1) 1%,rgba(149,182,196,1) 50%,rgba(86,126,160,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#95b6c4', endColorstr='#567ea0',GradientType=0 ); /* IE6-9 */

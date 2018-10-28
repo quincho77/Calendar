@@ -3,16 +3,15 @@ window.onload = function () {
     var date = new Date();
     var month = date.getMonth() + 1;   //0 - 11
     var year = date.getFullYear();  // 20--
-    
-    constructCalendar(year, month);
+    var day = date.getDate();
+    constructCalendar(year, month, day);
     centerATitle();
 };
 
 // This function creates the dates of a month with a table format to look like a calendar, callind the functions 
 // below
-function constructCalendar(year, month)
+function constructCalendar(year, month, currentDay)
 {
-    
     var table = document.createElement('table');
     table.id = 'date-days';
     var tr = document.createElement('tr');      // later inserted
@@ -36,6 +35,7 @@ function constructCalendar(year, month)
     var arrayDaysNextMonth = daysNextMonth(arrayDaysLastMonth.length, arrayDaysMonth.length);
     var arrayCalendar = arrayDaysLastMonth.concat(arrayDaysMonth, arrayDaysNextMonth);
 
+    // Build the cells in the table
     for (var i = 0; i < arrayCalendar.length; i++)
     {
         var td = document.createElement('td');
@@ -56,6 +56,9 @@ function constructCalendar(year, month)
             tr = document.createElement('tr');
         }// end of the if
     }// end of the for
+
+    prepareCells(table, daysMonth);
+    givesStyleCurrentDay(table, currentDay);
 }// end of the function constructCalendar
 
 function weekHeader(table)
@@ -90,9 +93,9 @@ function zeller (year, month)
     var a = parseInt((14 - month) / 12);
     var y = year - a;
     var m = parseInt(month + 12 * a - 2);
-    var dia = 1;
+    var day = 1;
     
-    var d = (dia + y + parseInt(y / 4) - parseInt(y / 100) + parseInt(y / 400) + parseInt((31 * m) / 12)) % 7;  // zeller's formula
+    var d = (day + y + parseInt(y / 4) - parseInt(y / 100) + parseInt(y / 400) + parseInt((31 * m) / 12)) % 7;  // zeller's formula
     
     return parseInt(d);
 }// end of the function zeller
@@ -171,3 +174,79 @@ function centerATitle()
     statements.marginLeft = value.toString() + "px";
 }// end of the function centerATitle
 
+// This function assign a event to the cells
+function prepareCells(table, daysMonth)
+{
+    var tdElements = table.querySelectorAll("#calendar-dates td");
+
+    for (var i = tdElements.length; i--;)
+    {
+        if ( (i < 6 && tdElements[i].textContent >= 25) || (i > daysMonth) )
+            continue;  // this if avoid assigning the event click to days that are outside of the current month
+
+        tdElements[i].selected = false;
+        tdElements[i].addEventListener("click", givesStylesCellClick);
+    }// end of the for
+}// end of the function prepareCells
+
+// This function gives style when a cell(day) of the Calendar is clicked
+// This function also might be optimized hereafter (for not to pass over the second "for" the first time and so on)
+function givesStylesCellClick(e)
+{
+    var tdElements = document.querySelectorAll("#calendar-dates td");
+    var currentDay = new Date().getDate();
+    console.log(currentDay);
+
+    if (e.target)
+    {
+        e.target.style.cssText = "color: #fbffff; " +
+        "background: #1a80e5; " +
+        "box-shadow: 2px 4px 15px 0 #0635a1 inset, " +
+        "-2px -2px 15px 0 #0635a1 inset;";
+        e.target.selected = true;
+        
+        if (e.target.textContent != currentDay)
+        {
+            for (var i = tdElements.length; i--;)
+            {
+                if (tdElements[i].textContent == currentDay)
+                {
+                    tdElements[i].style.cssText = "color: #fbffff;" + 
+                                                   "background: radial-gradient(ellipse at center, #566e90 0%,#6e85a5 100%);" +
+                                                   "box-shadow: 2px 8px 15px 0 #31486a inset," +
+                                                   "-2px -2px 15px 0 #31486a inset;";
+                    tdElements[i].selected = false;
+                    break;
+                }// end of if
+            }// end of if
+        }// end of if
+    }// end of if
+    
+    for (var i = tdElements.length; i--;)
+    {
+        if (tdElements[i].selected && (tdElements[i] != e.target))
+        {
+            tdElements[i].style = document.styleSheets[0].cssRules.style; // return to the styles by default
+            tdElements[i].selected = false; 
+            break;
+        }// end of if
+    }// end of the for
+}// end of the function givesStylesCellClick
+
+// This function gives the style to the current day in the calendar
+function givesStyleCurrentDay(table, currentDay)
+{
+    var tdElements = table.querySelectorAll("#calendar-dates td");
+
+    for (i = tdElements.length; i--;)
+    {
+        if (tdElements[i].textContent == currentDay)
+        {
+            tdElements[i].style.cssText = "color: #fbffff; " +
+                                          "background: #1a80e5; " +
+                                          "box-shadow: 2px 4px 15px 0 #0635a1 inset, " +
+                                          "-2px -2px 15px 0 #0635a1 inset;";
+            break;
+        }// end of if
+    }// end of the for
+}// end of the function givesStyleCurrentDay
