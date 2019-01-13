@@ -233,30 +233,27 @@ function UI()
     // This function moves to next month into the calendar
     this.nextMonth = function(calendar)
     {
-        //alert('Febrero');
-        //document.getElementById('date-days').remove();
-        var elementMonthHeader = document.getElementById('calendar-month-year');
-        elementMonthHeader.innerHTML = calendar.monthsNames[(calendar.month + 1) - 1];  // Set the month header
-        
-        // constructCalendar(2018, elementMonthHeader.month + 1);
-        // elementMonthHeader.month = elementMonthHeader.month + 1;
-        //currenMonth = currenMonth + 1;
-        //console.log(currenMonth);
+        document.getElementById('date-days').remove();
+
+        if (calendar.month !== 12)
+            calendar.month++;
+
+        calendar.constru();   // Buil the calendar again with the values for the next month in the calendar
+        this.printCalendar(calendar);
     }// end of the function nextMonth
 
-    // This function moves to next month into the calendar
+    // This function moves to previous month into the calendar
     this.previousMonth = function(calendar)
     {
-        //alert('Febrero');
-        //document.getElementById('date-days').remove();
-        var elementMonthHeader = document.getElementById('calendar-month-year');
-        elementMonthHeader.innerHTML = calendar.monthsNames[(calendar.month - 1) - 1];  // Set the month header
-        
-        // constructCalendar(2018, elementMonthHeader.month + 1);
-        // elementMonthHeader.month = elementMonthHeader.month + 1;
-        //currenMonth = currenMonth + 1;
-        //console.log(currenMonth);
-    }// end of the function nextMonth
+        document.getElementById('date-days').remove();
+
+        if (calendar.month !== 1)
+            calendar.month--;
+
+        console.log(calendar.month);
+        calendar.constru();   // Buil the calendar again with the values for the next month in the calendar
+        this.printCalendar(calendar);
+    }// end of the function previousMonth
 }// end of the class UI
 
 
@@ -292,14 +289,8 @@ document.querySelectorAll('#calendar-dates td').forEach(function(element, index)
 
 document.querySelector(".a-left").addEventListener('click', function(event) {
     ui.previousMonth(calendar);
-
-    if (calendar.month !== 2)
-        calendar.month--;
 });
 
 document.querySelector(".a-right").addEventListener('click', function(event) {
     ui.nextMonth(calendar);
-
-    if (calendar.month !== 11)
-        calendar.month++;
 });
