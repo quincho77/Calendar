@@ -7,7 +7,6 @@ body {
 }
 
 #calendar-container {
-    background-color: aquamarine;
     width: 480px;
     height: 525px;
 }
@@ -91,11 +90,13 @@ body {
 .a-left {
     border-right: 18px solid #384653;
     margin-left: 30px;
+    cursor: pointer;
 }
 
 .a-right {
     border-left: 18px solid #384653; 
     margin-right: 30px;
+    cursor: pointer;
 }
 
 #header-week {

@@ -4,18 +4,44 @@ window.onload = function () {
     var month = date.getMonth() + 1;   //0 - 11
     var year = date.getFullYear();  // 20--
     var day = date.getDate();
-    constructCalendar(year, month, day);
+    main(year, month, day);
     centerATitle();
 };
 
+// This function execute all other function on this script
+function main(year, month, day)
+{
+    constructCalendar(year, month, day);
+    givesStyleCurrentDay(day);
+
+    prepareArrows();
+    
+    // The next code add propeties (year - month - day) to some elments (.a-left & .a-right) for later make some operations
+    // var aLeft = document.getElementsByClassName('a-left');
+    // var aRight = document.getElementsByClassName('a-right');
+    var monthHeader = document.getElementById('calendar-month-year');
+
+    monthHeader.year = year;
+    monthHeader.month = month;
+    monthHeader.day = day;
+
+    // aLeft[0].year = year;
+    // aLeft[0].month = month;
+    // aLeft[0].day = day;
+    
+    // aRight[0].year = year;
+    // aRight[0].month = month;
+    // aRight[0].day = day;
+}// end of the function main
+
 // This function creates the dates of a month with a table format to look like a calendar, callind the functions 
 // below
-function constructCalendar(year, month, currentDay)
+function constructCalendar(year, month)
 {
     var table = document.createElement('table');
     table.id = 'date-days';
+
     var tr = document.createElement('tr');      // later inserted
-    //weekHeader(table);
     document.getElementById('calendar-dates').appendChild(table);
     
     var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
@@ -57,8 +83,9 @@ function constructCalendar(year, month, currentDay)
         }// end of the if
     }// end of the for
 
-    prepareCells(table, daysMonth);
-    givesStyleCurrentDay(table, currentDay);
+    document.querySelector("#calendar-month-year").innerHTML = monthNames[month - 1];
+    
+    prepareCells(table, daysMonth);    
 }// end of the function constructCalendar
 
 function weekHeader(table)
@@ -181,8 +208,8 @@ function prepareCells(table, daysMonth)
 
     for (var i = tdElements.length; i--;)
     {
-        if ( (i < 6 && tdElements[i].textContent >= 25) || (i > daysMonth) )
-            continue;  // this if avoid assigning the event click to days that are outside of the current month
+        if ( (i < 6 && tdElements[i].textContent >= 25) || (i > daysMonth && tdElements[i].textContent <= 6) )
+            continue;  // this 'if' avoid assigning the event click to days that are outside of the current month
 
         tdElements[i].selected = false;
         tdElements[i].addEventListener("click", givesStylesCellClick);
@@ -234,9 +261,9 @@ function givesStylesCellClick(e)
 }// end of the function givesStylesCellClick
 
 // This function gives the style to the current day in the calendar
-function givesStyleCurrentDay(table, currentDay)
+function givesStyleCurrentDay(currentDay)
 {
-    var tdElements = table.querySelectorAll("#calendar-dates td");
+    var tdElements = document.querySelectorAll("#calendar-dates td");
 
     for (i = tdElements.length; i--;)
     {
@@ -250,3 +277,21 @@ function givesStyleCurrentDay(table, currentDay)
         }// end of if
     }// end of the for
 }// end of the function givesStyleCurrentDay
+
+// This function prepare the click event in the arrows buttons of the calendar
+function prepareArrows()
+{
+    document.querySelector(".a-left").addEventListener('click', nextMonth);
+    document.querySelector(".a-right").addEventListener('click', nextMonth);
+}// end of the function prepareArrows
+
+function nextMonth()
+{
+    document.getElementById('date-days').remove();
+    var elementMonthHeader = document.getElementById('calendar-month-year');
+
+    constructCalendar(2018, elementMonthHeader.month + 1);
+    elementMonthHeader.month = elementMonthHeader.month + 1;
+    //currenMonth = currenMonth + 1;
+    //console.log(currenMonth);
+}// end of the function nextMonth
