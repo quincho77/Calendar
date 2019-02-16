@@ -4,6 +4,7 @@ function Calendar(day, month, year)
     this.day = day;
     this.month = month;
     this.year = year;
+    this.currentMonth = month;     // host the month in the real life
     this.monthsNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
                         'October', 'November', 'December'];
     this.days;
@@ -104,21 +105,6 @@ function Calendar(day, month, year)
 
         return arrayDaysMonth;
     }// end of the function daysMonth
-
-    this.getDay = function() 
-    {
-        return this.day;
-    }// end of the function getDay
-
-    this.getMonth = function() 
-    {
-        return this.month;
-    }// end of the function getDay
-
-    this.getYear = function() 
-    {
-        return this.year;
-    }// end of the function getDay
 }// end of the class Calendar
 
 
@@ -126,7 +112,6 @@ function Calendar(day, month, year)
 function UI()
 {
     this.dayCells = null;  // NodeList with TD elements
-    var selectedDay = -1;      // host the index of the selected day in the calendar
 
     // This function prepare the objects TD's adding a new property
     this.prepareDayCells = function()
@@ -182,7 +167,8 @@ function UI()
             if ( (i < 7 && this.dayCells[i].textContent >= 22) || (i > 28 && this.dayCells[i].textContent < 7) )
                 continue;
 
-            if (this.dayCells[i].textContent == calendar.day)
+            
+            if (this.dayCells[i].textContent == calendar.day /*&& calendar.month == calendar.currentMonth*/)
             {
                 this.dayCells[i].style.cssText = "color: #fbffff; " +
                                                   "background: #1a80e5; " +
@@ -195,15 +181,19 @@ function UI()
     }// end of the function printCalendar
 
     // This function gives style when a cell(day) of the Calendar is clicked or selected
-    this.selectDay = function(element, currentDay)
+    this.selectDay = function(element, currentDay, currentMonth)
     {
+        //console.log(currentMonth);
+
+        var monthHeader = document.getElementById('calendar-month-year');  // variable to compare below
+
         element.style.cssText = "color: #fbffff; " +
                                     "background: #1a80e5; " +                     // styles cell clicked
                                     "box-shadow: 2px 4px 15px 0 #0635a1 inset, " +
                                     "-2px -2px 15px 0 #0635a1 inset;";
         element.selected = true;
 
-        if (element.textContent != currentDay)
+        if (element.textContent != currentDay && monthHeader.textContent == currentMonth)
         {
             for (var i = this.dayCells.length; i--;)
             {
@@ -224,7 +214,7 @@ function UI()
             if (this.dayCells[i].selected && (this.dayCells[i] != element))
             {
                 this.dayCells[i].style = document.styleSheets[0].cssRules.style; // return sytles of the cells by defalut (no clicked)
-                this.dayCells[i].selected = false; 
+                this.dayCells[i].selected = false;  // ******** CHECK THIS SENTENCE ************
                 break;
             }// end of if
         }// end of the for
@@ -238,7 +228,7 @@ function UI()
         if (calendar.month !== 12)
             calendar.month++;
 
-        calendar.constru();   // Buil the calendar again with the values for the next month in the calendar
+        calendar.constru();   // Build the calendar again with the values for the next month in the calendar
         this.printCalendar(calendar);
     }// end of the function nextMonth
 
@@ -250,10 +240,45 @@ function UI()
         if (calendar.month !== 1)
             calendar.month--;
 
-        console.log(calendar.month);
-        calendar.constru();   // Buil the calendar again with the values for the next month in the calendar
+        calendar.constru();   // Build the calendar again with the values for the next month in the calendar
         this.printCalendar(calendar);
     }// end of the function previousMonth
+
+    // This function takes off the styles if the month is not the current
+    this.disSelectDay = function(currentDay, currentMonth)
+    {
+        var monthHeader = document.getElementById('calendar-month-year');  // variable to compare below
+
+        for (var i = this.dayCells.length; i--;)
+        {
+            if ( (this.dayCells[i].textContent <= 22 && i < 28) || (this.dayCells[i].textContent >= 22 && i > 7) )
+            {
+                if (this.dayCells[i].textContent == currentDay && currentMonth !== monthHeader)
+                {
+                    this.dayCells[i].style = document.styleSheets[0].cssRules.style; // return sytles of the cells by defalut (no clicked)
+                }// end of if
+            }// end of if
+        }// end of the for
+    }// end of the function disSelectDay
+
+    this.centerTitle = function()
+    {
+        // Get the width of the title assigned automatically
+        // Get the total width of the container
+        // (widthTitle - widthContainer) / 2
+        // assign the result of the last operation to the margin-left of the title
+        
+        var widthTitle = document.getElementById('calendar-year').offsetWidth;
+        var widthContainer = document.getElementById('calendar-container').offsetWidth;
+        var widthCalendarsButton = document.getElementsByTagName('button')[0].offsetWidth;
+        
+        var sheet = document.getElementsByTagName("link")[0].sheet;
+        var rules = sheet.cssRules;
+        var rule = rules[6];
+        var statements = rule.style;
+        var value = ((widthContainer - widthTitle) / 2) - (widthCalendarsButton + 7.5);
+        statements.marginLeft = value.toString() + "px";
+    }// end of the function centerTitle
 }// end of the class UI
 
 
@@ -261,11 +286,12 @@ var date = new Date();
 var month = date.getMonth() + 1;   //0 - 11
 var year = date.getFullYear();  // 20--
 var day = date.getDate();
-var calendar = new Calendar(day, 1, 2019);
+var calendar = new Calendar(day, month, 2019);
 calendar.constru();
 console.log(calendar);
 var ui = new UI();
 ui.printCalendar(calendar);
+ui.centerTitle();
 
 
 // DOM Events
@@ -276,21 +302,57 @@ window.addEventListener('load', function() {
 document.querySelectorAll('#calendar-dates td').forEach(function(element, index) {
     if ( (index < 7 && element.textContent >= 22) || (index > 28 && element.textContent < 7) )
     {
-        // This 'if' statement prevent assigning a click evento to the days out of the current month
+        // This 'if' statement prevent assigning a click event to the days out of the current month
     }// end of if
     
     else
     {
         element.addEventListener('click', function(e) {
-            ui.selectDay(e.target, calendar.day);
+            ui.selectDay(e.target, calendar.day, calendar.monthsNames[calendar.month - 1]);
         });
     }// end of else
 });
 
 document.querySelector(".a-left").addEventListener('click', function(event) {
     ui.previousMonth(calendar);
+
+    if (calendar.month !== month)
+        ui.disSelectDay(calendar.day, calendar.monthsNames[month - 1]);
+    
+    // We have to assing again 'click' events to the cells
+    document.querySelectorAll('#calendar-dates td').forEach(function(element, index) {
+        if ( (index < 7 && element.textContent >= 22) || (index > 28 && element.textContent < 7) )
+        {
+            // This 'if' statement prevent assigning a click evento to the days out of the current month
+        }// end of if
+        
+        else
+        {
+            element.addEventListener('click', function(e) {
+                ui.selectDay(e.target, calendar.day, calendar.monthsNames[month - 1]);
+            });
+        }// end of else
+    });
 });
 
 document.querySelector(".a-right").addEventListener('click', function(event) {
     ui.nextMonth(calendar);
+
+    if (calendar.month != month)
+        ui.disSelectDay(calendar.day, calendar.monthsNames[month - 1]);
+
+    // We have to assing again 'click' events to the cells
+    document.querySelectorAll('#calendar-dates td').forEach(function(element, index) {
+        if ( (index < 7 && element.textContent >= 22) || (index > 28 && element.textContent < 7) )
+        {
+            // This 'if' statement prevent assigning a click evento to the days out of the current month
+        }// end of if
+        
+        else
+        {
+            element.addEventListener('click', function(e) {
+                ui.selectDay(e.target, calendar.day, calendar.monthsNames[month - 1]);
+            });
+        }// end of else
+    });
 });
